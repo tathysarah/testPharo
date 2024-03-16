@@ -30,7 +30,8 @@ values add: aVal
 
 { #category : 'accessing' }
 SparseMatrix >> columns [
-columns:= OrderedCollection new.  
+	^columns 
+  
 ]
 
 { #category : 'accessing' }
@@ -46,7 +47,7 @@ nbRows := aSimpleMatrix size.
 	nbColumns := nbColumns max: sizeOfRow. 
 	1 to: sizeOfRow do: [ :column |
 		|val|
-		val := (row at:column).
+		val := ((aSimpleMatrix at:row) at:column).
 		val ~= 0 ifTrue: [ 
 			self addRow: row.
 			self addColumn: column. 
@@ -59,11 +60,30 @@ nbRows := aSimpleMatrix size.
 ]
 
 { #category : 'accessing' }
+SparseMatrix >> initialize [ 
+ super initialize. 
+
+rows := OrderedCollection new. 
+columns := OrderedCollection new. 
+values := OrderedCollection new. 
+]
+
+{ #category : 'accessing' }
+SparseMatrix >> printSparseMatrix [ 
+
+1 to: values size do: [ :i |
+	Transcript 
+		show: (rows at: i) space;
+		show: (columns at: i) space;
+		show: (values at: i) space; cr.  ]
+]
+
+{ #category : 'accessing' }
 SparseMatrix >> rows [ 
-rows:= OrderedCollection new.   
+	^rows
 ]
 
 { #category : 'accessing' }
 SparseMatrix >> values [ 
-values:= OrderedCollection new.  
+	^values
 ]
