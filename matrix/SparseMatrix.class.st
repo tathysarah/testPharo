@@ -17,7 +17,7 @@ Class {
 
 { #category : 'accessing' }
 SparseMatrix >> column [
-column:= OrderedCollection new.
+	^column 
 ]
 
 { #category : 'accessing' }
@@ -48,7 +48,7 @@ nbRows := aSimpleMatrix size
 
 { #category : 'accessing' }
 SparseMatrix >> row [
-row:= OrderedCollection new.
+	^ row 
 ]
 
 { #category : 'accessing' }
