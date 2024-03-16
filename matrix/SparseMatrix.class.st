@@ -49,8 +49,8 @@ nbRows := aSimpleMatrix size.
 		|val|
 		val := ((aSimpleMatrix at:row) at:column).
 		val ~= 0 ifTrue: [ 
-			self addRow: row.
-			self addColumn: column. 
+			self addRow: (row - 1).
+			self addColumn: (column-1). 
 			self addValue: val. 
 			 ]
 		]
@@ -63,19 +63,23 @@ nbRows := aSimpleMatrix size.
 SparseMatrix >> initialize [ 
  super initialize. 
 
-rows := OrderedCollection new. 
-columns := OrderedCollection new. 
-values := OrderedCollection new. 
+rows := OrderedCollection new.
+columns := OrderedCollection new.
+values := OrderedCollection new.
 ]
 
 { #category : 'accessing' }
 SparseMatrix >> printSparseMatrix [ 
 
-1 to: values size do: [ :i |
-	Transcript 
-		show: (rows at: i) space;
-		show: (columns at: i) space;
-		show: (values at: i) space; cr.  ]
+|actual sparseMatrix| 
+
+actual:= OrderedCollection new.  
+actual add: rows. 
+actual add: columns.
+actual add: values. 
+sparseMatrix := actual do: [ :each | Transcript show: each;cr. ].
+^ sparseMatrix 
+
 ]
 
 { #category : 'accessing' }
