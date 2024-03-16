@@ -5,53 +5,65 @@ Class {
 	#name : 'SparseMatrix',
 	#superclass : 'Object',
 	#instVars : [
-		'row',
-		'column',
-		'value',
-		'nbRows',
-		'nbColumns'
+		'rows',
+		'columns',
+		'values'
 	],
 	#category : 'matrix',
 	#package : 'matrix'
 }
 
 { #category : 'accessing' }
-SparseMatrix >> column [
-	^column 
+SparseMatrix >> addColumn: aCol [
+columns add: aCol.  
 ]
 
 { #category : 'accessing' }
-SparseMatrix >> nbColumns [ 
- 	^ nbColumns 
+SparseMatrix >> addRow: aRow [
+rows add: aRow  
 ]
 
 { #category : 'accessing' }
-SparseMatrix >> nbColumns: aSimpleMatrix [
-
-nbColumns :=0.  
-1 to: nbRows do: [ :anotherRow |
-	|cur|
-	cur := (aSimpleMatrix at: anotherRow ) size.
-	nbColumns := nbColumns max: cur. 
-	]
+SparseMatrix >> addValue: aVal [
+values add: aVal 
 ]
 
 { #category : 'accessing' }
-SparseMatrix >> nbRows [ 
- 	^ nbRows
+SparseMatrix >> columns [
+columns:= OrderedCollection new.  
 ]
 
 { #category : 'accessing' }
-SparseMatrix >> nbRows: aSimpleMatrix [
-nbRows := aSimpleMatrix size 
+SparseMatrix >> fromSimpleMatrix: aSimpleMatrix [
+
+|nbColumns nbRows| 
+nbColumns :=0.
+nbRows := aSimpleMatrix size. 
+
+1 to: nbRows do: [ :row |
+	|sizeOfRow| 
+	sizeOfRow := (aSimpleMatrix at: row) size. 
+	nbColumns := nbColumns max: sizeOfRow. 
+	1 to: sizeOfRow do: [ :column |
+		|val|
+		val := (row at:column).
+		val ~= 0 ifTrue: [ 
+			self addRow: row.
+			self addColumn: column. 
+			self addValue: val. 
+			 ]
+		]
+	 ]
+
+
 ]
 
 { #category : 'accessing' }
-SparseMatrix >> row [
-	^ row 
+SparseMatrix >> rows [ 
+rows:= OrderedCollection new.   
 ]
 
 { #category : 'accessing' }
-SparseMatrix >> value [ 
-	^ value 
+SparseMatrix >> values [ 
+values:= OrderedCollection new.  
 ]
