@@ -24,7 +24,7 @@ SparseMatrixTest >> testPrintSparseMatrix [
 simpleMatrix := #((0 0 3 0 4) ( 0 0 5 7 0) (0 0 0 0 0) (0 2 6 0 0)). 
 sparseM := SparseMatrix new. 
 sparseM fromSimpleMatrix: simpleMatrix.
-sparseM printSparseMatrix.
+self assert: (sparseM printSparseMatrix) equals: #(#(0 0 1 1 3 3) #(2 4 2 3 1 2) #(3 4 5 7 2 6)).
 ]
 
 { #category : 'tests' }

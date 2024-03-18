@@ -150,7 +150,8 @@ sparseMatrix:= OrderedCollection new.
 sparseMatrix add: rows. 
 sparseMatrix add: columns.
 sparseMatrix add: values. 
-"sparseMatrix := actual do: [ :each | Transcript show: each;cr. ]."
+sparseMatrix := sparseMatrix do: [ :each | each asArray ].
+sparseMatrix := sparseMatrix asArray.
 ^ sparseMatrix
 
 ]
