@@ -1,25 +1,20 @@
 Class {
 	#name : 'JavadocPackageTest',
 	#superclass : 'TestCase',
-	#instVars : [
-		'aPackage'
-	],
 	#category : 'javadoc',
 	#package : 'javadoc'
 }
 
 { #category : 'running' }
-JavadocPackageTest >> setUp [
-	super setUp.
+JavadocPackageTest >> setUp [ 
 
-	"Put here a common initialization logic for tests"
-	aPackage := DAPackage onPackageNamed: 'Color'.
+super setUp.
 ]
 
-{ #category : 'as yet unclassified' }
-JavadocPackageTest >> streamPackageTest [ 
+{ #category : 'tests' }
+JavadocPackageTest >> testPrintInformationOfAPackage [
 
-| doc | 
-doc := JavadocPackage new. 
-doc streamPackage: 'Colors'. 
+|documentation| 
+documentation := JavadocPackage new. 
+self assert: (documentation javadocForPackage: 'Colors') isString.
 ]
