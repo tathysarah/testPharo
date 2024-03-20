@@ -9,20 +9,46 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-JavadocPackage >> streamPackage: aPackage [ 
+JavadocPackage >> javadocForClass: aClass [ 
 
-| classes package doc| 
+| doc |
+doc := String new.
+doc := doc, 'The class ', aClass name, ' has: ', String cr.
+doc := doc, '- Superclass: ', aClass superclass name, String cr. 
+doc := doc , '- Subclasses: ', (aClass subclasses ifEmpty: ['"There is no subclasses"'] ifNotEmpty: [ aClass subclasses do:[ :aSubclass | 
+	doc := doc , aSubclass name, String cr.] ] ), String cr. 
+doc := doc , '-Instances variables: ', (aClass allInstVarNames ifEmpty: ['"There is no instances variables"'] ifNotEmpty: [ aClass allInstVarNames asString] ) ,  String cr.
+doc := doc, 'and Methods:', String cr.
+aClass methodDictionary ifEmpty: [doc := doc, '"There is no methods"'] ifNotEmpty: [ aClass methodDictionary valuesDo: [:method |
+	doc := doc, '- ', method selector, String cr. ].] .
+	
+^doc 
 
-package := RPackageOrganizer default packageNamed: aPackage. 
-classes := package classes. 
-doc := '' writeStream. 
 
-package classesDo: [ :eachClass |
-	doc nextPutAll: 'The class ', eachClass name, ' has:  '; cr;
-	nextPutAll: 'Superclass: ', (eachClass superclass ifNil: ['(There is no superclass )'] ifNotNil: [ eachClass superclass name ]); cr;
-   nextPutAll: 'Subclasses: ', (eachClass subclasses isEmpty
-                                                    ifTrue: ['(There is no subclass )']
-                                                    ifFalse: [(eachClass withAll: self subclasses) collect: [:subclass | subclass name] ]); cr;
-   nextPutAll: 'instances variables: ', (eachClass instVarNames isEmpty ifTrue: ['(There is no instances variables)'] ifFalse: [ eachClass instVarNames join: ', ' ]) ].
+
+
+]
+
+{ #category : 'as yet unclassified' }
+JavadocPackage >> javadocForPackage: aPackage [ 
+
+|package doc| 
+
+package := RPackageOrganizer default packageNamed: aPackage.  
+doc := String new.    
+"package classes do: [ :eachClass | 
+	doc 
+		nextPutAll: (self javadocForClass: eachClass ).
+	].
+
+^ doc "
+
+package classes do: [ :eachClass | 
+	doc := doc , (self javadocForClass: eachClass ).
+	doc := doc , String cr. ].
+
+^ doc 
+
+
 
 ]
