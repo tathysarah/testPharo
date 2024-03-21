@@ -1,5 +1,6 @@
 "
-The class SparseMatrix
+The class SparseMatrix is a representation of a sparse matrix created by a simple matrix where there is no acculmulation of 0. 
+In this class, every matrix is representing by an array. 
 "
 Class {
 	#name : 'SparseMatrix',
@@ -37,9 +38,10 @@ SparseMatrix >> columns [
 { #category : 'accessing' }
 SparseMatrix >> fromSimpleMatrix: aSimpleMatrix [
 
+"This method build the sparse matrix by a simple matrix where there are fewer elements 0 than a simple matrix."
 |nbColumns nbRows| 
 nbColumns :=0.
-nbRows := aSimpleMatrix size. 
+nbRows := aSimpleMatrix size.    
 
 1 to: nbRows do: [ :row |
 	|sizeOfRow| 
@@ -66,70 +68,28 @@ values := values asArray.
 
 { #category : 'accessing' }
 SparseMatrix >> getOriginalMatrix [
+" This method returns the original matrix which help to represent the sparse matrix."
+   | originalMatrix rowIndex colIndex realRows realColumns|
+	realRows := (rows max)+1.
+	realColumns := (columns max) +1.
+   originalMatrix := Array new: realRows.
 
-"|originalM| 
-originalM  := OrderedCollection new.
+   1 to: realRows do: [ :i |
+		| originalRow |
+      originalRow := Array new: realColumns .
+      1 to: realColumns do: [ :j |
+			originalRow at: j put: 0. 
+			].
+      originalMatrix at: i put: originalRow.
+   ].
 
-1 to: rows do: [ :each |
-        | row |
-        row := OrderedCollection new.
-        1 to: columns do: [ :col |
-            row add: 0. 
-        ].
-        originalM add: row.
-    ].
+   1 to: self values size do: [ :i |
+       rowIndex := (self rows at: i) .
+       colIndex := (self columns at: i) .
+       (originalMatrix at: rowIndex + 1) at: colIndex + 1 put: (self values at: i).
+   ].
 
-    1 to: values size do: [ :each |
-        | row col val |
-        row := (rows at: each) - 1. 
-        col := (columns at: each) - 1. 
-        val := values at: each.
-        ((originalM at: row+ 1) at: col + 1) put: val. 
-    ].
-
-    ^originalM 
-
-
-|orignalM| 
-orignalM := OrderedCollection new. 
-
-1 to: rows do: [ :each | 
-	|row| 
-	row := (rows at: each).
-	1 to: 
-	 ]
-
-| traditionalMatrix |
-    traditionalMatrix := OrderedCollection new.
-
-    1 to: values size do: [ :i |
-        | rowIndex colIndex value |
-        rowIndex := (rows at: i) . 
-        colIndex := (columns at: i) . 
-        value := values at: i.
-
-        (traditionalMatrix at: rowIndex + 1) ifNil: [
-            (traditionalMatrix at: (rowIndex + 1)) put: (OrderedCollection new: columns).
-        ].
-
-        (((traditionalMatrix at: rowIndex + 1) at: (colIndex + 1)) put: value) ifFalse: [ false ]. 
-    ].
-
-    ^traditionalMatrix" 
-| originalMatrix colIndex |
-    originalMatrix := OrderedCollection new.
-
-    rows withIndexDo: [ :rowValue :rowIndex |
-        | originalRow |
-        originalRow := OrderedCollection new: columns.
-        1 to: rowValue do: [ :index |
-            colIndex := columns at: index.
-            originalRow at: colIndex put: 0.
-        ].
-        originalMatrix add: originalRow.
-    ].
-
-    ^originalMatrix
+    ^ originalMatrix
 ]
 
 { #category : 'accessing' }
@@ -143,7 +103,7 @@ values := OrderedCollection new.
 
 { #category : 'accessing' }
 SparseMatrix >> printSparseMatrix [ 
-
+"This method returns a representation or a display of a sparse matrix"
 |sparseMatrix | 
 
 sparseMatrix:= OrderedCollection new.  
@@ -159,6 +119,24 @@ sparseMatrix := sparseMatrix asArray.
 { #category : 'accessing' }
 SparseMatrix >> rows [ 
 	^rows
+]
+
+{ #category : 'accessing' }
+SparseMatrix >> toStandardMatrix [
+
+| standardMatrix row |
+    standardMatrix := Array new: rows size. 
+    
+    1 to: rows size do: [ :i |
+        standardMatrix at: i put: (Array new: columns size) ].
+
+    1 to: rows size do: [ :i |
+        row := standardMatrix at: i.
+        1 to: columns size do: [ :j |
+            | value |
+            value := (rows at: i ifAbsent: [ ^ 1 ]) at: j ifAbsent: [ 0 ].
+            row at: j put: value ]].
+    ^ standardMatrix
 ]
 
 { #category : 'accessing' }
