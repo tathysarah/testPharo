@@ -122,24 +122,6 @@ SparseMatrix >> rows [
 ]
 
 { #category : 'accessing' }
-SparseMatrix >> toStandardMatrix [
-
-| standardMatrix row |
-    standardMatrix := Array new: rows size. 
-    
-    1 to: rows size do: [ :i |
-        standardMatrix at: i put: (Array new: columns size) ].
-
-    1 to: rows size do: [ :i |
-        row := standardMatrix at: i.
-        1 to: columns size do: [ :j |
-            | value |
-            value := (rows at: i ifAbsent: [ ^ 1 ]) at: j ifAbsent: [ 0 ].
-            row at: j put: value ]].
-    ^ standardMatrix
-]
-
-{ #category : 'accessing' }
 SparseMatrix >> values [ 
 	^values
 ]
